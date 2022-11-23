@@ -14,4 +14,4 @@ Database project to clone zipCar
  - Run the migration using  ```npx sequelize-cli  db:migrate``` to create the physical tables in the database.
 
 # Database Model 
-![](C:\Users\ntnbh\Downloads\erd.png)
+![](erd.png)
