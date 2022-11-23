@@ -23,8 +23,9 @@ app.set('view engine', 'ejs');
 
 // load up app routes
 app.get(['/', '/home', '/landing'], (req, res) =>{
-    //res.render('landing');
-    res.json("landing page");
+    let orders = "nitin"
+    res.render('home',{orders:orders});
+    //res.json("landing page");
 });
 
 

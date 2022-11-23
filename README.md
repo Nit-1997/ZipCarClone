@@ -8,3 +8,10 @@ Database project to clone zipCar
  - Run ```npm start``` to start the zipcar server.
  - You should be able to access the backend apis at http://localhost:7000/
 
+# How to make Database migrations
+ - Install ```sequelize-mig``` to create migrations from your database models.
+ - Run ```sequelize-mig migration:make -n mega_migration``` , you should see the mega-migration created inside your migrations folder.
+ - Run the migration using  ```npx sequelize-cli  db:migrate``` to create the physical tables in the database.
+
+# Database Model 
+![](C:\Users\ntnbh\Downloads\erd.png)

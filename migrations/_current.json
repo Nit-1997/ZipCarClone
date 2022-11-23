@@ -1,0 +1,457 @@
+{
+    "tables": {
+        "cars": {
+            "tableName": "cars",
+            "schema": {
+                "id": {
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "type": {
+                    "allowNull": false,
+                    "field": "type",
+                    "seqType": "Sequelize.ENUM('GO', 'XL', 'Premium')"
+                },
+                "name": {
+                    "allowNull": false,
+                    "field": "name",
+                    "seqType": "Sequelize.STRING"
+                },
+                "make": {
+                    "allowNull": false,
+                    "field": "make",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "fuelType": {
+                    "allowNull": false,
+                    "field": "fuelType",
+                    "seqType": "Sequelize.ENUM('Diesel', 'Petrol', 'Electric', 'Hybrid')"
+                },
+                "rentalRate": {
+                    "allowNull": true,
+                    "field": "rentalRate",
+                    "seqType": "Sequelize.DECIMAL"
+                },
+                "createdAt": {
+                    "allowNull": true,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "inventoryId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "inventories",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "inventoryId",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "userId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "users",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "userId",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
+        "incidents": {
+            "tableName": "incidents",
+            "schema": {
+                "id": {
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "description": {
+                    "allowNull": false,
+                    "field": "description",
+                    "seqType": "Sequelize.STRING"
+                },
+                "severity": {
+                    "allowNull": false,
+                    "field": "severity",
+                    "seqType": "Sequelize.ENUM('P1', 'P2', 'P3')"
+                },
+                "resolution": {
+                    "allowNull": false,
+                    "field": "resolution",
+                    "seqType": "Sequelize.STRING"
+                },
+                "state": {
+                    "allowNull": false,
+                    "field": "state",
+                    "seqType": "Sequelize.ENUM('RESOLVED', 'RAISED', 'ASSIGNED', 'NOT_ASSIGNED')"
+                },
+                "createdAt": {
+                    "allowNull": true,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "leaseOrderId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "leaseOrders",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "leaseOrderId",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "userId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "users",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "userId",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
+        "insuranceOrders": {
+            "tableName": "insuranceOrders",
+            "schema": {
+                "id": {
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "status": {
+                    "allowNull": false,
+                    "field": "status",
+                    "seqType": "Sequelize.ENUM('completed', 'ongoing', 'failed')"
+                },
+                "createdAt": {
+                    "allowNull": true,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "insurancePlanId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "insurancePlans",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "insurancePlanId",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "leaseOrderId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "leaseOrders",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "leaseOrderId",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
+        "insurancePlans": {
+            "tableName": "insurancePlans",
+            "schema": {
+                "id": {
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "minValidity": {
+                    "allowNull": false,
+                    "field": "minValidity",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "premium": {
+                    "allowNull": false,
+                    "field": "premium",
+                    "seqType": "Sequelize.DECIMAL"
+                },
+                "vehicleType": {
+                    "allowNull": false,
+                    "field": "vehicleType",
+                    "seqType": "Sequelize.ENUM('GO', 'XL', 'Premium')"
+                },
+                "createdAt": {
+                    "allowNull": true,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "insuranceVendors": {
+            "tableName": "insuranceVendors",
+            "schema": {
+                "id": {
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "name": {
+                    "primaryKey": true,
+                    "field": "name",
+                    "seqType": "Sequelize.STRING"
+                },
+                "scale": {
+                    "primaryKey": true,
+                    "field": "scale",
+                    "seqType": "Sequelize.ENUM('SMALL', 'MID', 'LARGE')"
+                },
+                "createdAt": {
+                    "allowNull": true,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "inventories": {
+            "tableName": "inventories",
+            "schema": {
+                "id": {
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "zipcode": {
+                    "allowNull": false,
+                    "field": "zipcode",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "status": {
+                    "allowNull": false,
+                    "field": "status",
+                    "seqType": "Sequelize.ENUM('AVAILABLE', 'BOOKED', 'UNDER_MAINTENANCE')"
+                },
+                "createdAt": {
+                    "allowNull": true,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "pickupStationId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "pickupStations",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "pickupStationId",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
+        "leaseOrders": {
+            "tableName": "leaseOrders",
+            "schema": {
+                "id": {
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "status": {
+                    "allowNull": false,
+                    "field": "status",
+                    "seqType": "Sequelize.ENUM('completed', 'ongoing', 'failed')"
+                },
+                "createdAt": {
+                    "allowNull": true,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "inventoryId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "inventories",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "inventoryId",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "userId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "users",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "userId",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
+        "payments": {
+            "tableName": "payments",
+            "schema": {
+                "id": {
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "state": {
+                    "allowNull": false,
+                    "field": "state",
+                    "seqType": "Sequelize.ENUM('PROCESSING', 'SUCCESS', 'FAILED')"
+                },
+                "createdAt": {
+                    "allowNull": true,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "leaseOrderId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "leaseOrders",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "leaseOrderId",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "userId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "users",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "userId",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
+        "pickupStations": {
+            "tableName": "pickupStations",
+            "schema": {
+                "id": {
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "zipcode": {
+                    "allowNull": false,
+                    "field": "zipcode",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "address": {
+                    "allowNull": false,
+                    "field": "address",
+                    "seqType": "Sequelize.STRING"
+                },
+                "createdAt": {
+                    "allowNull": true,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "users": {
+            "tableName": "users",
+            "schema": {
+                "id": {
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "type": {
+                    "allowNull": false,
+                    "field": "type",
+                    "seqType": "Sequelize.ENUM('owner', 'client')"
+                },
+                "name": {
+                    "allowNull": false,
+                    "field": "name",
+                    "seqType": "Sequelize.STRING"
+                },
+                "email": {
+                    "allowNull": false,
+                    "field": "email",
+                    "seqType": "Sequelize.STRING"
+                },
+                "password": {
+                    "allowNull": false,
+                    "field": "password",
+                    "seqType": "Sequelize.STRING"
+                },
+                "contact": {
+                    "allowNull": true,
+                    "field": "contact",
+                    "seqType": "Sequelize.STRING"
+                },
+                "createdAt": {
+                    "allowNull": true,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "mapper": {
+            "tableName": "mapper",
+            "schema": {
+                "insurancePlanId": {
+                    "primaryKey": true,
+                    "references": {
+                        "model": "insurancePlans",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "field": "insurancePlanId",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "insuranceVendorId": {
+                    "primaryKey": true,
+                    "references": {
+                        "model": "insuranceVendors",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "field": "insuranceVendorId",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        }
+    },
+    "path": "D:\\dbms\\Project\\ZipCarClone\\migrations\\_current.json",
+    "backupPath": "D:\\dbms\\Project\\ZipCarClone\\migrations\\_current_bak.json",
+    "exists": false,
+    "revision": 1
+}

@@ -1,29 +1,29 @@
 'use strict';
 module.exports = (sequelize, Sequelize) => {
-    var userSchema = sequelize.define('user', {
+    let carSchema = sequelize.define('car', {
         id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
         type: {
-            type: Sequelize.ENUM("owner","client"),
+            type: Sequelize.ENUM("GO","XL","Premium"),
             allowNull: false
         },
         name: {
             type: Sequelize.STRING,
             allowNull: false
         },
-        email: {
-            type: Sequelize.STRING,
+        make: {
+            type: Sequelize.INTEGER,
             allowNull: false
         },
-        password: {
-            type: Sequelize.STRING,
+        fuelType: {
+            type: Sequelize.ENUM("Diesel","Petrol","Electric","Hybrid"),
             allowNull: false
         },
-        contact: {
-            type: Sequelize.STRING,
+        rentalRate: {
+            type: Sequelize.DECIMAL,
             allowNull: true
         },
         createdAt: {
@@ -31,11 +31,8 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.DATE
         }
     }, {});
-    userSchema.associate =  (models) => {
-         userSchema.hasMany(models.car);
-         userSchema.hasMany(models.incidents);
-         userSchema.hasMany(models.leaseOrder);
-         userSchema.hasMany(models.payment);
+    carSchema.associate =  (models) => {
+       carSchema.belongsTo(models.inventory);
     };
-    return userSchema;
+    return carSchema;
 };
