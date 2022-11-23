@@ -21,6 +21,8 @@ app.use(bodyParser.json({ limit: "50mb" }));
 app.set('view engine', 'ejs');
 
 
+app.use('/',routes);
+
 // load up app routes
 app.get(['/', '/home', '/landing'], (req, res) =>{
     let orders = "nitin"

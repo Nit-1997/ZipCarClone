@@ -10,6 +10,8 @@ const userController = controllers.user;
 router.route('/create')
     .post(userController.create);
 
+router.route('/getAll')
+    .get(userController.getAll);
 
 server.use('/', router);
 
