@@ -8,7 +8,7 @@ const sequelize = models.sequelize;
 module.exports = {
     create: async function (req, res) {
         try {
-              // write code to create a user here.
+            // write code to create a user here.
 
         } catch (error) {
             console.log(error);
@@ -24,6 +24,23 @@ module.exports = {
         } catch (error) {
             console.log(error);
         }
-    }
+    },
+
+    login: async function (req, res) {
+        try {
+          res.render('login');
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
+    signup: async function (req, res) {
+        try {
+            res.render('signup');
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
 
 }
