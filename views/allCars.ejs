@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Zip-Car</title>
+    <!--bootstrap-->
+    <link rel="stylesheet" href="../assets/lib/bootstrap.min.css" />
+    <!-- font-awesome icon -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+    <!--main.css-->
+    <link rel="stylesheet" type="text/css" href="../assets/css/allClubView.css" />
+    <!--google font-->
+    <link href="https://fonts.googleapis.com/css?family=Damion" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Raleway" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Tajawal:700" rel="stylesheet">
+</head>
+<body>
+
+<!--navbar-->
+<header>
+    <nav class="navbar navbar-inverse no-margin  navbar-fixed-top" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <a class="navbar-brand" href="/">Zipcar</a>
+        <div class="navbar-collapse collapse">
+<!--            <ul class="nav navbar-nav navbar-left">-->
+<!--                <li><a href="#">Discover <i class="fas fa-search"></i></a></li>-->
+<!--            </ul>-->
+            <ul class="nav navbar-nav navbar-right">
+                <% if(!currentUser){ %>
+<!--                    <li><a href="/createPub">Add a pub <i class="fa fa-plus-circle"></i></a></li>-->
+                    <li><a href="/user/login">Login <i class="fas fa-sign-in-alt"></i></a></li>
+                    <li><a href="/user/signup">Sign up <i class="fas fa-user-plus"></i></a></li>
+                <% }else{ %>
+<!--                <li><img src="<%=currentUser.image%>" class="profiePic"></li>-->
+                <li><a href="#"><%=currentUser.name%></a></li>
+<!--                <li><a href="/createPub">Add a pub <i class="fa fa-plus-circle"></i></a></li>-->
+                <li><a href="/logout">Logout <i class="fas fa-sign-in-alt"></i></a></li>
+<!--                <li><a href="/delete">Delete Account <i class="fas fa-sign-in-alt"></i></a></li>-->
+                <% } %>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+
+<section class="bbc">
+    <% if(error && error.length>0){%>
+    <div class="container">
+        <div class="alert alert-danger" role="alert">
+            <%=error%>
+        </div>
+    </div>
+    <% }%>
+    <% if(success && success.length>0){%>
+    <div class="container">
+        <div class="alert alert-success" role="alert">
+            <%=success%>
+        </div>
+    </div>
+    <% }%>
+    <div class="row" style="height: 722px;">
+        <div class="col-md-3 col-sm-3 col-xs-12 ht500">
+            <div class="row">
+                <div class="col-md-3 col-sm-3 col-xs-12 ht161"></div>
+                <div class="col-md-8 col-sm-8 col-xs-12 ht500 side">
+                    <div class="ht161"></div>
+
+                    <div class="input-group slide">
+                        <!--<input type="text" class="form-control" placeholder="Search for pubs">-->
+                        <p>
+                        <form action="/multi" method="GET" class="form-inline">
+                            <div class="form-group">
+                                <input type="text" name="search" placeholder="search..." class="form-control">
+                                <input type="submit" value="Filter Cars" class="btn btn-default">
+                            </div>
+                        </form>
+                        </p>
+                    </div>
+                    <h4 class="slide"><strong>Filters</strong></h4>
+                    <hr>
+                    <p class="slide"><strong>Category filter:-</strong></p>
+                    <div class="radio glide">
+                        <label><input type="radio" name="optradio">GO</label>
+                    </div>
+                    <div class="radio glide">
+                        <label><input type="radio" name="optradio">XL</label>
+                    </div>
+                    <div class="radio glide">
+                        <label><input type="radio" name="optradio">Premium</label>
+                    </div>
+                    <hr>
+                    <p class="slide"><strong>Fuel type filter:-</strong></p>
+                    <div class="radio glide">
+                        <label><input type="radio" name="optradio">Diesel</label>
+                    </div>
+                    <div class="radio glide">
+                        <label><input type="radio" name="optradio">Petrol</label>
+                    </div>
+                    <div class="radio glide">
+                        <label><input type="radio" name="optradio">Electric</label>
+                    </div>
+                    <div class="radio glide">
+                        <label><input type="radio" name="optradio">Hybrid</label>
+                    </div>
+                </div>
+                <div class="col-md-1 col-sm-1 col-xs-12 ht500"></div>
+            </div>
+        </div>
+        <div class="col-md-8 col-sm-8 col-xs-12">
+            <h1 class="pubs"><strong>Best Cars around you:-</strong></h1>
+            <br><br>
+            <% if(noMatch !== null) { %>
+                <h3><%= noMatch %></h3>
+            <% } %>
+            <% cars.forEach(car => { %>
+            <div class="event">
+                <div class="row ht40">
+                    <div class="col-md-4 col-sm-12 col-xs-12 ht40"><img class=newimg src="../assets/images/1.jpg"></div>
+                    <div class="col-md-8 col-sm-12 col-xs-12 ht40 pubdet">
+                        <h3 class="pubnm"><%=car.name%></h3>
+                        <p class="lct"><strong><strong>Car Type : </strong><%=car.type%></strong></p>
+                        <p class="st"><span class="cst"><strong>Rental Rate:</strong> </span> <strong><%=car.rentalRate%> </strong><span class="cst">$</span>
+                        <p class="st"><span class="cst"><strong>Fuel Type:</strong> </span> <strong><%=car.fuelType%> </strong><span class="cst"></span>
+<!--                        <p class="st"><span class="cst"><strong>Ratings -</strong></span><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></p>-->
+                        <div class="btn btn-primary"><a href="multi/<%=car.id%>">Book</a></div>
+                    </div>
+                </div>
+            </div>
+            <%})%>
+
+
+        </div>
+        <div class="col-md-1 col-sm-1 col-xs-12 ht0"></div>
+    </div>
+</section>
+
+<br>
+
+<!--footer-->
+<!--<section class="ht450 foot">-->
+<!--    <div class="row ht150">-->
+<!--        <div class="col-md-3 col-sm-12 col-xs-12 ht20 footlf">Zipcar</div>-->
+<!--        <div class="col-md-6 col-sm-12 col-xs-12 ht160 footer">-->
+<!--            <div class="row ht160">-->
+<!--                <div class="col-md-6 col-sm-6 col-xs-6 ht160">-->
+<!--                    <ul class="high">-->
+<!--                        <li class="lih"><strong>My Account</strong></li>-->
+<!--                        <li>Dashboard</li>-->
+<!--                        <li>My bookings</li>-->
+<!--                    </ul>-->
+<!--                </div>-->
+<!--                <div class="col-md-6 col-sm-6 col-xs-6 ht160">-->
+<!--                    <ul class="high">-->
+<!--                        <li class="lih"><strong>Help</strong></li>-->
+<!--                        <li>Privacy Policy</li>-->
+<!--                        <li>FAQs</li>-->
+<!--                    </ul>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="col-md-3 col-sm-12 col-xs-12 ht0"></div>-->
+<!--    </div>-->
+<!--</section>-->
+
+<!--jQuery-->
+<script type="text/javascript" src="../assets/lib/jquery.min.js"></script>
+<!--bootstrap js -->
+<script type="text/javascript" src="../assets/lib/bootstrap.min.js"></script>
+
+</body>
+</html>

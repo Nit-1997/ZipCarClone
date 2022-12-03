@@ -80,6 +80,36 @@ app.get("/logout",(req,res) => {
     });
 });
 
+app.get('/ticket',async (req,res) => {
+   res.render('ticket');
+});
+
+app.post('/book',async (req,res)=> {
+    var paymentId = req.body.razorpay_payment_id;
+    console.log('hi', paymentId);
+
+    setTimeout(function () {
+        console.log('halo');
+        res.render('ticket');
+    }, 10)
+
+    // var transaction = models.transaction;
+
+    // var data1 = {
+    //     userId:req.user.id,
+    //     amount:1800,
+    //     paymentId:paymentId,
+    //     contact:req.user.contact,
+    //     createdAt: new Date()
+    // };
+    //
+    // transaction.create(data1).then(newTransaction=>{
+    //     console.log(newTransaction);
+    // });
+
+});
+
+
 app.listen(PORT, () => {
     console.log("zipcar clone server has started on http://localhost:"+PORT);
 });

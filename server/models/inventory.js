@@ -21,6 +21,7 @@ module.exports = (sequelize, Sequelize) => {
     }, {});
     inventorySchema.associate =  (models) => {
         inventorySchema.belongsTo(models.pickupStation);
+        inventorySchema.belongsTo(models.car);
     };
     return inventorySchema;
 };

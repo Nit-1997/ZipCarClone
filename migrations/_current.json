@@ -39,17 +39,6 @@
                     "field": "createdAt",
                     "seqType": "Sequelize.DATE"
                 },
-                "inventoryId": {
-                    "allowNull": true,
-                    "references": {
-                        "model": "inventories",
-                        "key": "id"
-                    },
-                    "onDelete": "SET NULL",
-                    "onUpdate": "CASCADE",
-                    "field": "inventoryId",
-                    "seqType": "Sequelize.INTEGER"
-                },
                 "userId": {
                     "allowNull": true,
                     "references": {
@@ -259,6 +248,17 @@
                     "onDelete": "SET NULL",
                     "onUpdate": "CASCADE",
                     "field": "pickupStationId",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "carId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "cars",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "carId",
                     "seqType": "Sequelize.INTEGER"
                 }
             },

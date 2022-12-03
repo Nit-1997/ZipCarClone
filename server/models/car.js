@@ -32,7 +32,7 @@ module.exports = (sequelize, Sequelize) => {
         }
     }, {});
     carSchema.associate =  (models) => {
-       carSchema.belongsTo(models.inventory);
+
     };
     return carSchema;
 };

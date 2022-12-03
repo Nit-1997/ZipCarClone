@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>zip-car-clone</title>
+    <!--bootstrap-->
+    <link rel="stylesheet" href="../assets/lib/bootstrap.min.css" />
+    <!-- font-awesome icon -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+    <!--main.css-->
+    <link rel="stylesheet" type="text/css" href="../assets/css/createPubs.css" />
+    <!--google font-->
+    <link href="https://fonts.googleapis.com/css?family=Damion" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Raleway" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300" rel="stylesheet">
+</head>
+<body>
+
+<!--navbar-->
+<header>
+    <nav class="navbar navbar-inverse no-margin  navbar-fixed-top" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <a class="navbar-brand" href="/">Zipcar</a>
+        <div class="navbar-collapse collapse">
+<!--            <ul class="nav navbar-nav navbar-left">-->
+<!--                <li><a href="#">Discover <i class="fas fa-search"></i></a></li>-->
+<!--            </ul>-->
+            <ul class="nav navbar-nav navbar-right">
+                <% if(!currentUser){ %>
+<!--                    <li><a href="/createPub">Add a pub <i class="fa fa-plus-circle"></i></a></li>-->
+                    <li><a href="/user/login">Login <i class="fas fa-sign-in-alt"></i></a></li>
+                    <li><a href="/user/signup">Sign up <i class="fas fa-user-plus"></i></a></li>
+                <% }else{ %>
+<!--                <li><img src="<%=currentUser.image%>" class="profiePic"></li>-->
+                <li><a href="#"><%=currentUser.name%></a></li>
+<!--                <li><a href="/createPub">Add a pub <i class="fa fa-plus-circle"></i></a></li>-->
+                <li><a href="/logout">Logout <i class="fas fa-sign-in-alt"></i></a></li>
+<!--                <li><a href="/delete">Delete Account <i class="fas fa-sign-in-alt"></i></a></li>-->
+                <% } %>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<section class="bbc">
+    <% if(error && error.length>0){%>
+    <div class="container">
+        <div class="alert alert-danger" role="alert">
+            <%=error%>
+        </div>
+    </div>
+    <% }%>
+    <% if(success && success.length>0){%>
+    <div class="container">
+        <div class="alert alert-success" role="alert">
+            <%=success%>
+        </div>
+    </div>
+    <% }%>
+    <div class="row">
+        <div class="col-sm-6 col-xs-12 center-col ht900 lp">
+            <div class="row lg">
+                <h1>Add Car</h1>
+                <form action="/car/createCar" method="POST">
+                    <div class="form-group">
+                        <label for="name">Car name</label>
+                        <input type="text" class="form-control" name="name" id="name" aria-describedby="name" placeholder="Enter Car's model name">
+                    </div>
+                    <div class="form-group">
+                        <label for="about">Make Year of the car</label>
+                        <input type="Number" class="form-control" id="make" aria-describedby="about" name="make" placeholder="Make year of the Car">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Rental Price in $/hr</label>
+                        <input type="Number" step="0.01" class="form-control" id="rentalRate" aria-describedby="address" name="rentalRate" placeholder="Enter the rental price for the car">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Fuel Type :-</label>
+                        <hr/>
+                        <label for="rentalRate">Petrol</label>
+                        <input name="fuelType" type="radio"  id="Petrol" value="Petrol">
+                        <br/>
+                        <label for="rentalRate">Diesel</label>
+                        <input  name="fuelType" type="radio"  id="Diesel" value="petrol">
+                        <br/>
+                        <label for="rentalRate">Electric</label>
+                        <input name="fuelType" type="radio"  id="Electric" value="Electric">
+                        <br/>
+                        <label for="rentalRate">Hybrid</label>
+                        <input name="fuelType" type="radio"  id="Hybrid" value="Hybrid">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Car Type :-</label>
+                        <hr/>
+                        <label for="rentalRate">Premium</label>
+                        <input name="type" type="radio"  id="Premium" value="Premium">
+                        <br/>
+                        <label for="rentalRate">GO</label>
+                        <input  name="type" type="radio"  id="GO" value="GO">
+                        <br/>
+                        <label for="rentalRate">XL</label>
+                        <input name="type" type="radio"  id="XL" value="XL">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="zipcode">Zipcode</label>
+                        <input type="Number"  class="form-control" id="rentalRate" aria-describedby="address" name="zipcode" placeholder="Enter the zipcode where you want to rent out the car">
+                    </div>
+
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xs-12 center-col ht900 lt"></div>
+    </div>
+</section>
+
+
+<section class="ht450 foot">
+    <div class="row ht150">
+        <div class="col-md-3 col-sm-12 col-xs-12 ht20 footlf">Zipcar</div>
+        <div class="col-md-6 col-sm-12 col-xs-12 ht160 footer">
+            <div class="row ht160">
+                <div class="col-md-6 col-sm-6 col-xs-6 ht160">
+                    <ul class="high">
+                        <li class="lih"><strong>My Account</strong></li>
+                        <li>Dashboard</li>
+                        <li>My bookings</li>
+                    </ul>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6 ht160">
+                    <ul class="high">
+                        <li class="lih"><strong>Help</strong></li>
+                        <li>Privacy Policy</li>
+                        <li>FAQs</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-12 col-xs-12 ht0"></div>
+    </div>
+</section>
+<script>
+    function activatePlacesSearch() {
+        let input = document.getElementById("address");
+        let autocomplete = new google.maps.places.Autocomplete(input);
+    }
+</script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAgY52iScKYCAMMPrcBUhcYJQ1ozM4KUsM&libraries=places&callback=activatePlacesSearch"></script>
+<!--jQuery-->
+<script type="text/javascript" src="../assets/lib/jquery.min.js"></script>
+<!--bootstrap js -->
+<script type="text/javascript" src="../assets/lib/bootstrap.min.js"></script>
+
+</body>
+</html>

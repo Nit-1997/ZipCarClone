@@ -42,7 +42,9 @@
                 <% }else{ %>
 <!--                <li><img src="<%=currentUser.image%>" class="profiePic"></li>-->
                 <li><a href="#"><%=currentUser.name%></a></li>
-<!--                <li><a href="/createPub">Add a pub <i class="fa fa-plus-circle"></i></a></li>-->
+                    <% if(currentUser.type === "owner"){ %>
+                          <li><a href="/car/createCar">Add a Car <i class="fa fa-plus-circle"></i></a></li>
+                    <% } %>
                 <li><a href="/logout">Logout <i class="fas fa-sign-in-alt"></i></a></li>
 <!--                <li><a href="/delete">Delete Account <i class="fas fa-sign-in-alt"></i></a></li>-->
                 <% } %>
@@ -77,7 +79,7 @@
                             <!--<h1>Clubbo</h1>
                             <p>make clubbing easier</p>-->
                             <h1 id="cont">Make Leasing easier</h1>
-                            <div class="btn btn-info"><a href="/">view cars</a></div>
+                            <div class="btn btn-info"><a href="/car/cars">view cars</a></div>
                         </div>
                     </div>
                 </div>

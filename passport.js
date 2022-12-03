@@ -32,6 +32,9 @@ module.exports =  (passport, user) =>{
             let generateHash = function (password) {
                 return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
             };
+
+            // select * from users where email = abc@gmail.com limit 1
+            // CALL findUser(email)
             User.findOne({
                 where: {
                     email: email
@@ -52,6 +55,7 @@ module.exports =  (passport, user) =>{
                             createdAt: new Date()
                         };
 
+                    // CALL createUser(email , type ...)
 
                     User.create(data).then( (newUser, created)=>{
                         if (!newUser) {

@@ -7,10 +7,10 @@ const Sequelize = require("sequelize");
  * createTable() => "insuranceVendors", deps: []
  * createTable() => "pickupStations", deps: []
  * createTable() => "users", deps: []
- * createTable() => "inventories", deps: [pickupStations]
+ * createTable() => "cars", deps: [users]
+ * createTable() => "inventories", deps: [pickupStations, cars]
  * createTable() => "leaseOrders", deps: [inventories, users]
  * createTable() => "incidents", deps: [leaseOrders, users]
- * createTable() => "cars", deps: [inventories, users]
  * createTable() => "insuranceOrders", deps: [insurancePlans, leaseOrders]
  * createTable() => "payments", deps: [leaseOrders, users]
  * createTable() => "mapper", deps: [insurancePlans, insuranceVendors]
@@ -20,7 +20,7 @@ const Sequelize = require("sequelize");
 const info = {
   revision: 1,
   name: "mega_migration",
-  created: "2022-11-23T06:53:35.981Z",
+  created: "2022-11-29T23:07:32.008Z",
   comment: "",
 };
 
@@ -148,6 +148,51 @@ const migrationCommands = (transaction) => [
   {
     fn: "createTable",
     params: [
+      "cars",
+      {
+        id: {
+          type: Sequelize.INTEGER,
+          field: "id",
+          autoIncrement: true,
+          primaryKey: true,
+        },
+        type: {
+          type: Sequelize.ENUM("GO", "XL", "Premium"),
+          field: "type",
+          allowNull: false,
+        },
+        name: { type: Sequelize.STRING, field: "name", allowNull: false },
+        make: { type: Sequelize.INTEGER, field: "make", allowNull: false },
+        fuelType: {
+          type: Sequelize.ENUM("Diesel", "Petrol", "Electric", "Hybrid"),
+          field: "fuelType",
+          allowNull: false,
+        },
+        rentalRate: {
+          type: Sequelize.DECIMAL,
+          field: "rentalRate",
+          allowNull: true,
+        },
+        createdAt: {
+          type: Sequelize.DATE,
+          field: "createdAt",
+          allowNull: true,
+        },
+        userId: {
+          type: Sequelize.INTEGER,
+          field: "userId",
+          onUpdate: "CASCADE",
+          onDelete: "SET NULL",
+          references: { model: "users", key: "id" },
+          allowNull: true,
+        },
+      },
+      { transaction },
+    ],
+  },
+  {
+    fn: "createTable",
+    params: [
       "inventories",
       {
         id: {
@@ -177,6 +222,14 @@ const migrationCommands = (transaction) => [
           onUpdate: "CASCADE",
           onDelete: "SET NULL",
           references: { model: "pickupStations", key: "id" },
+          allowNull: true,
+        },
+        carId: {
+          type: Sequelize.INTEGER,
+          field: "carId",
+          onUpdate: "CASCADE",
+          onDelete: "SET NULL",
+          references: { model: "cars", key: "id" },
           allowNull: true,
         },
       },
@@ -271,59 +324,6 @@ const migrationCommands = (transaction) => [
           onUpdate: "CASCADE",
           onDelete: "SET NULL",
           references: { model: "leaseOrders", key: "id" },
-          allowNull: true,
-        },
-        userId: {
-          type: Sequelize.INTEGER,
-          field: "userId",
-          onUpdate: "CASCADE",
-          onDelete: "SET NULL",
-          references: { model: "users", key: "id" },
-          allowNull: true,
-        },
-      },
-      { transaction },
-    ],
-  },
-  {
-    fn: "createTable",
-    params: [
-      "cars",
-      {
-        id: {
-          type: Sequelize.INTEGER,
-          field: "id",
-          autoIncrement: true,
-          primaryKey: true,
-        },
-        type: {
-          type: Sequelize.ENUM("GO", "XL", "Premium"),
-          field: "type",
-          allowNull: false,
-        },
-        name: { type: Sequelize.STRING, field: "name", allowNull: false },
-        make: { type: Sequelize.INTEGER, field: "make", allowNull: false },
-        fuelType: {
-          type: Sequelize.ENUM("Diesel", "Petrol", "Electric", "Hybrid"),
-          field: "fuelType",
-          allowNull: false,
-        },
-        rentalRate: {
-          type: Sequelize.DECIMAL,
-          field: "rentalRate",
-          allowNull: true,
-        },
-        createdAt: {
-          type: Sequelize.DATE,
-          field: "createdAt",
-          allowNull: true,
-        },
-        inventoryId: {
-          type: Sequelize.INTEGER,
-          field: "inventoryId",
-          onUpdate: "CASCADE",
-          onDelete: "SET NULL",
-          references: { model: "inventories", key: "id" },
           allowNull: true,
         },
         userId: {
