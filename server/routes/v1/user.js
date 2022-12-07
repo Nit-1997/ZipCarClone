@@ -17,6 +17,9 @@ router.route('/login')
 router.route('/getAll')
     .get(userController.getAll);
 
+router.route('/showAllOrders')
+    .get(userController.showAllOrders);
+
 server.use('/', router);
 
 module.exports = server;

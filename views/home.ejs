@@ -41,7 +41,7 @@
                     <li><a href="/user/signup">Sign up <i class="fas fa-user-plus"></i></a></li>
                 <% }else{ %>
 <!--                <li><img src="<%=currentUser.image%>" class="profiePic"></li>-->
-                <li><a href="#"><%=currentUser.name%></a></li>
+                <li><a href="/user/showAllOrders"><%=currentUser.name%></a></li>
                     <% if(currentUser.type === "owner"){ %>
                           <li><a href="/car/createCar">Add a Car <i class="fa fa-plus-circle"></i></a></li>
                     <% } %>
@@ -79,7 +79,11 @@
                             <!--<h1>Clubbo</h1>
                             <p>make clubbing easier</p>-->
                             <h1 id="cont">Make Leasing easier</h1>
-                            <div class="btn btn-info"><a href="/car/cars">view cars</a></div>
+                            <% if(currentUser){ %>
+                               <div class="btn btn-info"><a href="/car/cars">view cars</a></div>
+                            <%}else{ %>
+                                <div class="btn btn-info"><a href="/user/login">Login/Signup to view cars</a></div>
+                            <%}%>
                         </div>
                     </div>
                 </div>

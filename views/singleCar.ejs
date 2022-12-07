@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>zipcar-clone</title>
+    <!--bootstrap-->
+    <link rel="stylesheet" href="../assets/lib/bootstrap.min.css" />
+    <link href="../assets/css/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <!-- font-awesome icon -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+    <!--main.css-->
+    <link rel="stylesheet" type="text/css" href="../assets/css/singlePubView.css" />
+    <!--google font-->
+    <link href="https://fonts.googleapis.com/css?family=Damion" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Raleway" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Concert+One" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Tajawal:700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Passion+One" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Assistant" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Fira+Sans+Condensed" rel="stylesheet">
+</head>
+<body>
+
+<!--navbar-->
+<header>
+    <nav class="navbar navbar-inverse no-margin  navbar-fixed-top" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <a class="navbar-brand" href="/">Zipcar</a>
+        <div class="navbar-collapse collapse">
+<!--            <ul class="nav navbar-nav navbar-left">-->
+<!--                <li><a href="#">Discover <i class="fas fa-search"></i></a></li>-->
+<!--            </ul>-->
+            <ul class="nav navbar-nav navbar-right">
+                <% if(!currentUser){ %>
+<!--                    <li><a href="/createPub">Add a pub <i class="fa fa-plus-circle"></i></a></li>-->
+                    <li><a href="/user/login">Login <i class="fas fa-sign-in-alt"></i></a></li>
+                    <li><a href="/user/signup">Sign up <i class="fas fa-user-plus"></i></a></li>
+                <% }else{ %>
+<!--                <li><img src="<%=currentUser.image%>" class="profiePic"></li>-->
+                <li><a href="/user/showAllOrders"><%=currentUser.name%></a></li>
+<!--                <li><a href="/createPub">Add a pub <i class="fa fa-plus-circle"></i></a></li>-->
+                <li><a href="/logout">Logout <i class="fas fa-sign-in-alt"></i></a></li>
+<!--                <li><a href="/delete">Delete Account <i class="fas fa-sign-in-alt"></i></a></li>-->
+                <% } %>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<!--landing slide-->
+<section  class="bbc">
+    <% if(error && error.length>0){%>
+    <div class="container">
+        <div class="alert alert-danger" role="alert">
+            <%=error%>
+        </div>
+    </div>
+    <% }%>
+    <% if(success && success.length>0){%>
+    <div class="container">
+        <div class="alert alert-success" role="alert">
+            <%=success%>
+        </div>
+    </div>
+    <% }%>
+    <div id="map" class="ht500 headd">
+        <h1 class="highdef"><%=car.name%></h1>
+        <p class="hd">
+            <%=car.name%> is the best car in the world.
+        </p>
+    </div>
+</section>
+
+<section>
+    <div class="row">
+        <div  class="col-md-7 col-sm-12 col-xs-12 ht900">
+            <div class="row">
+
+            </div>
+            <hr>
+            <div class="row sell">
+                <h3 class="fell lell">Overview</h3>
+                <div class="row cell">
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                        <h5><strong>About</strong></h5>
+                    </div>
+                    <div class="col-md-9 col-sm-9 col-xs-9">
+                        <p>This is the best car</p>
+                    </div>
+                </div>
+                <div class="row cell">
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                        <h5><strong>Fuel Type</strong></h5>
+                    </div>
+                    <div class="col-md-9 col-sm-9 col-xs-9">
+                        <p><%=car.fuelType%></p>
+                    </div>
+                </div>
+
+                <div class="row cell">
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                        <h5><strong>Make</strong></h5>
+                    </div>
+                    <div class="col-md-9 col-sm-9 col-xs-9">
+                        <p><%=car.make%></p>
+                    </div>
+                </div>
+
+                <div class="row cell">
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                        <h5><strong>Type</strong></h5>
+                    </div>
+                    <div class="col-md-9 col-sm-9 col-xs-9">
+                        <p><%=car.type%></p>
+                    </div>
+                </div>
+                <div class="row cell">
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                        <h5><strong>Location</strong></h5>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                        <p><%=car.address%></p>
+                    </div>
+                </div>
+                <div class="row cell">
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                        <h5><strong>Zipcode</strong></h5>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                        <p><%=car.zipcode%></p>
+                    </div>
+                </div>
+
+                <div class="row cell">
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                        <h5><strong>Price</strong></h5>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                        <p><%=car.rentalRate%></p>
+                    </div>
+                </div>
+<!--                <div class="row cell">-->
+<!--                    <div class="col-md-3 col-sm-3 col-xs-3">-->
+<!--                        <h5><strong>Contact</strong></h5>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-9 col-sm-9 col-xs-9">-->
+<!--                        <p>+91<</p>-->
+<!--                    </div>-->
+<!--                </div>-->
+                <hr>
+                <br>
+                <div class="wt"></div>
+
+            </div>
+        </div>
+        <div class="col-md-5 col-sm-12 col-xs-12 ht900">
+            <div class="ht33">
+
+                <form action="/payment/create" method="POST">
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label for="name">Select Date</label>
+                            <div name="date" class="controls input-append date form_datetime" data-date="1979-09-16T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p" data-link-field="dtp_input1">
+                                <input size="16" name="date" type="text" value="" readonly>
+                                <span class="add-on"><i class="icon-remove"></i></span>
+                                <span class="add-on"><i class="icon-th"></i></span>
+                            </div>
+                            <input type="hidden" name="dated" id="dtp_input1" value="" /><br/>
+                            <input type="hidden" name="carId" id="dtp_input1" value=<%=car.id%> /><br/>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Make the Purchase</button>
+                </form>
+                <% if(currentUser&& ((car.userId) === (currentUser.id))){ %>
+                <a href ="/car/edit?carId=<%=car.id%>" class="btn btn-warning btn-xs">Edit this Car</a>
+                <form action="/car/delete?carId=<%=car.id%>" method="POST">
+                    <input type="hidden" name="carId" id="dtp_input1" value=<%=car.id%> /><br/>
+                    <button type="submit" class="btn btn-primary">Delete this car</button>
+                </form>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</section>
+<br><br>
+
+
+
+<section class="ht450 foot">
+    <div class="row ht150">
+        <div class="col-md-3 col-sm-12 col-xs-12 ht20 footlf">Zipcar</div>
+        <div class="col-md-6 col-sm-12 col-xs-12 ht160 footer">
+            <div class="row ht160">
+                <div class="col-md-6 col-sm-6 col-xs-6 ht160">
+                    <ul class="high">
+                        <li class="lih"><strong>My Account</strong></li>
+                        <li>Dashboard</li>
+                        <li>My bookings</li>
+                    </ul>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6 ht160">
+                    <ul class="high">
+                        <li class="lih"><strong>Help</strong></li>
+                        <li>Privacy Policy</li>
+                        <li>FAQs</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-12 col-xs-12 ht0"></div>
+    </div>
+</section>
+
+<script type="text/javascript">
+    $(".form_datetime").datetimepicker({
+        format: "dd MM yyyy - hh:ii"
+    });
+</script>
+
+<!--jQuery-->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script type="text/javascript" src="../assets/lib/jquery.min.js"></script>
+<!--bootstrap js -->
+<script type="text/javascript" src="../assets/lib/bootstrap.min.js"></script>
+<script type="text/javascript" src="../assets/js/singlePubView.js"></script>
+
+<script type="text/javascript" src="../assets/css/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../assets/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+<script type="text/javascript" src="../assets/js/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script>
+<script type="text/javascript">
+    $('.form_datetime').datetimepicker({
+        //language:  'fr',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1
+    });
+    $('.form_date').datetimepicker({
+        language:  'fr',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+    $('.form_time').datetimepicker({
+        language:  'fr',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 1,
+        minView: 0,
+        maxView: 1,
+        forceParse: 0
+    });
+</script>
+
+</body>
+</html>

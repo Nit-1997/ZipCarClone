@@ -4,11 +4,12 @@ const server = express();
 
 const router = express.Router();
 
+//const functions = require('functions');
 const controllers = require('../../controllers/index.js');
-const paymentController = controllers.payment;
+const incidentController = controllers.incident;
 
-router.route('/create')
-    .post(paymentController.makePayment);
+router.route('/createIncident')
+    .post(incidentController.showIncidentPage);
 
 
 
