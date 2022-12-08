@@ -12,6 +12,7 @@ let express = require("express")
     , passport  = require('passport')
     , sequelize = models.sequelize
     , session  = require('express-session');
+const {compareSync} = require("bcrypt-nodejs");
 
 const PORT = 7000;
 
@@ -58,7 +59,9 @@ app.get(['/', '/home', '/landing'], (req, res) =>{
 
 app.post('/register',passport.authenticate('local-signup', {
     successRedirect: '/landing',
-    failureRedirect: '/user/login'
+    failureRedirect: '/user/signup',
+    failureFlash: true,
+    successFlash: 'Welcome to Zipcar'
 }));
 
 app.post('/signin', passport.authenticate('local-signin', {
@@ -67,7 +70,6 @@ app.post('/signin', passport.authenticate('local-signin', {
     failureFlash: true,
     successFlash: 'Welcome to Zipcar'
 }),(req,res)=>{
-
 });
 
 app.get("/logout",(req,res) => {
@@ -80,34 +82,6 @@ app.get("/logout",(req,res) => {
     });
 });
 
-app.get('/ticket',async (req,res) => {
-   res.render('ticket');
-});
-
-app.post('/book',async (req,res)=> {
-    var paymentId = req.body.razorpay_payment_id;
-    console.log('hi', paymentId);
-
-    setTimeout(function () {
-        console.log('halo');
-        res.render('ticket');
-    }, 10)
-
-    // var transaction = models.transaction;
-
-    // var data1 = {
-    //     userId:req.user.id,
-    //     amount:1800,
-    //     paymentId:paymentId,
-    //     contact:req.user.contact,
-    //     createdAt: new Date()
-    // };
-    //
-    // transaction.create(data1).then(newTransaction=>{
-    //     console.log(newTransaction);
-    // });
-
-});
 
 
 

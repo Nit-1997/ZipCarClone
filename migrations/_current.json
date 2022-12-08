@@ -62,6 +62,11 @@
                     "field": "id",
                     "seqType": "Sequelize.INTEGER"
                 },
+                "title": {
+                    "allowNull": false,
+                    "field": "title",
+                    "seqType": "Sequelize.STRING"
+                },
                 "description": {
                     "allowNull": false,
                     "field": "description",
@@ -108,109 +113,6 @@
                     "onUpdate": "CASCADE",
                     "field": "userId",
                     "seqType": "Sequelize.INTEGER"
-                }
-            },
-            "indexes": []
-        },
-        "insuranceOrders": {
-            "tableName": "insuranceOrders",
-            "schema": {
-                "id": {
-                    "primaryKey": true,
-                    "autoIncrement": true,
-                    "field": "id",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "status": {
-                    "allowNull": false,
-                    "field": "status",
-                    "seqType": "Sequelize.ENUM('completed', 'ongoing', 'failed')"
-                },
-                "createdAt": {
-                    "allowNull": true,
-                    "field": "createdAt",
-                    "seqType": "Sequelize.DATE"
-                },
-                "insurancePlanId": {
-                    "allowNull": true,
-                    "references": {
-                        "model": "insurancePlans",
-                        "key": "id"
-                    },
-                    "onDelete": "SET NULL",
-                    "onUpdate": "CASCADE",
-                    "field": "insurancePlanId",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "leaseOrderId": {
-                    "allowNull": true,
-                    "references": {
-                        "model": "leaseOrders",
-                        "key": "id"
-                    },
-                    "onDelete": "SET NULL",
-                    "onUpdate": "CASCADE",
-                    "field": "leaseOrderId",
-                    "seqType": "Sequelize.INTEGER"
-                }
-            },
-            "indexes": []
-        },
-        "insurancePlans": {
-            "tableName": "insurancePlans",
-            "schema": {
-                "id": {
-                    "primaryKey": true,
-                    "autoIncrement": true,
-                    "field": "id",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "minValidity": {
-                    "allowNull": false,
-                    "field": "minValidity",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "premium": {
-                    "allowNull": false,
-                    "field": "premium",
-                    "seqType": "Sequelize.DECIMAL"
-                },
-                "vehicleType": {
-                    "allowNull": false,
-                    "field": "vehicleType",
-                    "seqType": "Sequelize.ENUM('GO', 'XL', 'Premium')"
-                },
-                "createdAt": {
-                    "allowNull": true,
-                    "field": "createdAt",
-                    "seqType": "Sequelize.DATE"
-                }
-            },
-            "indexes": []
-        },
-        "insuranceVendors": {
-            "tableName": "insuranceVendors",
-            "schema": {
-                "id": {
-                    "primaryKey": true,
-                    "autoIncrement": true,
-                    "field": "id",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "name": {
-                    "primaryKey": true,
-                    "field": "name",
-                    "seqType": "Sequelize.STRING"
-                },
-                "scale": {
-                    "primaryKey": true,
-                    "field": "scale",
-                    "seqType": "Sequelize.ENUM('SMALL', 'MID', 'LARGE')"
-                },
-                "createdAt": {
-                    "allowNull": true,
-                    "field": "createdAt",
-                    "seqType": "Sequelize.DATE"
                 }
             },
             "indexes": []
@@ -417,34 +319,6 @@
                     "allowNull": true,
                     "field": "createdAt",
                     "seqType": "Sequelize.DATE"
-                }
-            },
-            "indexes": []
-        },
-        "mapper": {
-            "tableName": "mapper",
-            "schema": {
-                "insurancePlanId": {
-                    "primaryKey": true,
-                    "references": {
-                        "model": "insurancePlans",
-                        "key": "id"
-                    },
-                    "onDelete": "CASCADE",
-                    "onUpdate": "CASCADE",
-                    "field": "insurancePlanId",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "insuranceVendorId": {
-                    "primaryKey": true,
-                    "references": {
-                        "model": "insuranceVendors",
-                        "key": "id"
-                    },
-                    "onDelete": "CASCADE",
-                    "onUpdate": "CASCADE",
-                    "field": "insuranceVendorId",
-                    "seqType": "Sequelize.INTEGER"
                 }
             },
             "indexes": []

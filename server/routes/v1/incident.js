@@ -11,6 +11,15 @@ const incidentController = controllers.incident;
 router.route('/createIncident')
     .post(incidentController.showIncidentPage);
 
+router.route('/addIncident')
+    .post(incidentController.create);
+
+router.route('/allIncidents')
+    .post(incidentController.getAll);
+
+router.route('/resolveIncident')
+    .post(incidentController.resolveIncident);
+
 
 
 server.use('/', router);

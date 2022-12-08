@@ -9,6 +9,20 @@ module.exports = {
     create: async function (req, res) {
         try {
             // write code to create a user here.
+            let users = await sequelize.query('CALL login (:email, :pwd)',
+                {
+                    replacements:
+                        {
+                            email: "ntnbhat@gmail.com",
+                            pwd: '$2a$08$78fjxFr6G2Xn6n6.UsXJmOXQsqFw6thgrFs.033KXvVutlggKzpKy'
+                        }
+                });
+
+
+
+            console.log(users[0]);
+
+            res.json(users[0]);
 
         } catch (error) {
             console.log(error);
@@ -44,23 +58,23 @@ module.exports = {
 
     showAllOrders: async (req, res) => {
         try {
-            if(!req.user){
+            if (!req.user) {
                 await res.sendStatus(401);
                 return;
             }
-            let orders = await sequelize.query("select cars.name, cars.make, cars.fuelType , cars.rentalRate ,\n" +
+            let orders = await sequelize.query("select leaseOrders.id as leaseOrderId, cars.name, cars.make, cars.fuelType , cars.rentalRate ,\n" +
                 "cars.type, payments.state as paymentStatus , leaseOrders.status as orderStatus  , leaseOrders.createdAt as orderDate\n" +
                 "from leaseOrders \n" +
                 "join payments on leaseOrders.id = payments.leaseOrderId \n" +
                 "join inventories on leaseOrders.inventoryId = inventories.id\n" +
                 "join cars on cars.id = inventories.id\n" +
-                "where leaseOrders.userId = "+req.user.id+";", {type: sequelize.QueryTypes.SELECT});
+                "where leaseOrders.userId = " + req.user.id + ";", {type: sequelize.QueryTypes.SELECT});
             console.log(orders);
             let noMatch = "No Orders Found"
-            if(orders.length > 0){
+            if (orders.length > 0) {
                 noMatch = null;
             }
-            res.render('allOrders',{cars: orders ,noMatch:noMatch});
+            res.render('allOrders', {cars: orders, noMatch: noMatch});
         } catch (error) {
             console.log(error);
         }

@@ -68,55 +68,32 @@
         <div class="col-sm-6 col-xs-12 center-col ht900 lp">
             <div class="row lg">
                 <h1>Create an incident</h1>
-                <form action="/car/createCar" method="POST">
+                <form action="/incident/addIncident" method="POST">
                     <div class="form-group">
-                        <label for="name">Car name</label>
-                        <input type="text" class="form-control" name="name" id="name" aria-describedby="name" placeholder="Enter Car's model name">
+                        <label for="name">Title</label>
+                        <input type="text" class="form-control" name="title" id="name" aria-describedby="name" placeholder="Enter Title of the incident">
                     </div>
                     <div class="form-group">
-                        <label for="about">Make Year of the car</label>
-                        <input type="Number" class="form-control" id="make" aria-describedby="about" name="make" placeholder="Make year of the Car">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="address">Rental Price in $/hr</label>
-                        <input type="Number" step="0.01" class="form-control" id="rentalRate" aria-describedby="address" name="rentalRate" placeholder="Enter the rental price for the car">
+                        <label for="name">Description</label>
+                        <input type="text" class="form-control" name="description" id="name" aria-describedby="name" placeholder="Enter description of the incident">
                     </div>
 
+
                     <div class="form-group">
-                        <label for="address">Fuel Type :-</label>
+                        <label for="address">Severity :-</label>
                         <hr/>
-                        <label for="rentalRate">Petrol</label>
-                        <input name="fuelType" type="radio"  id="Petrol" value="Petrol">
+                        <label for="rentalRate">P1</label>
+                        <input name="severity" type="radio"  id="P1" value="P1">
                         <br/>
-                        <label for="rentalRate">Diesel</label>
-                        <input  name="fuelType" type="radio"  id="Diesel" value="petrol">
+                        <label for="rentalRate">P2</label>
+                        <input  name="severity" type="radio"  id="P2" value="P2">
                         <br/>
-                        <label for="rentalRate">Electric</label>
-                        <input name="fuelType" type="radio"  id="Electric" value="Electric">
+                        <label for="rentalRate">P3</label>
+                        <input name="severity" type="radio"  id="P3" value="P3">
                         <br/>
-                        <label for="rentalRate">Hybrid</label>
-                        <input name="fuelType" type="radio"  id="Hybrid" value="Hybrid">
                     </div>
 
-                    <div class="form-group">
-                        <label for="address">Car Type :-</label>
-                        <hr/>
-                        <label for="rentalRate">Premium</label>
-                        <input name="type" type="radio"  id="Premium" value="Premium">
-                        <br/>
-                        <label for="rentalRate">GO</label>
-                        <input  name="type" type="radio"  id="GO" value="GO">
-                        <br/>
-                        <label for="rentalRate">XL</label>
-                        <input name="type" type="radio"  id="XL" value="XL">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="zipcode">Zipcode</label>
-                        <input type="Number"  class="form-control" id="rentalRate" aria-describedby="address" name="zipcode" placeholder="Enter the zipcode where you want to rent out the car">
-                    </div>
-
+                    <input type="hidden" name="leaseOrderId" id="dtp_input1" value=<%=leaseOrderId%> /><br/>
 
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>

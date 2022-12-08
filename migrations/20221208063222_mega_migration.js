@@ -3,89 +3,24 @@ const Sequelize = require("sequelize");
 /**
  * Actions summary:
  *
- * createTable() => "insurancePlans", deps: []
- * createTable() => "insuranceVendors", deps: []
  * createTable() => "pickupStations", deps: []
  * createTable() => "users", deps: []
  * createTable() => "cars", deps: [users]
  * createTable() => "inventories", deps: [pickupStations, cars]
  * createTable() => "leaseOrders", deps: [inventories, users]
  * createTable() => "incidents", deps: [leaseOrders, users]
- * createTable() => "insuranceOrders", deps: [insurancePlans, leaseOrders]
  * createTable() => "payments", deps: [leaseOrders, users]
- * createTable() => "mapper", deps: [insurancePlans, insuranceVendors]
  *
  */
 
 const info = {
   revision: 1,
   name: "mega_migration",
-  created: "2022-11-29T23:07:32.008Z",
+  created: "2022-12-08T06:32:22.031Z",
   comment: "",
 };
 
 const migrationCommands = (transaction) => [
-  {
-    fn: "createTable",
-    params: [
-      "insurancePlans",
-      {
-        id: {
-          type: Sequelize.INTEGER,
-          field: "id",
-          autoIncrement: true,
-          primaryKey: true,
-        },
-        minValidity: {
-          type: Sequelize.INTEGER,
-          field: "minValidity",
-          allowNull: false,
-        },
-        premium: {
-          type: Sequelize.DECIMAL,
-          field: "premium",
-          allowNull: false,
-        },
-        vehicleType: {
-          type: Sequelize.ENUM("GO", "XL", "Premium"),
-          field: "vehicleType",
-          allowNull: false,
-        },
-        createdAt: {
-          type: Sequelize.DATE,
-          field: "createdAt",
-          allowNull: true,
-        },
-      },
-      { transaction },
-    ],
-  },
-  {
-    fn: "createTable",
-    params: [
-      "insuranceVendors",
-      {
-        id: {
-          type: Sequelize.INTEGER,
-          field: "id",
-          autoIncrement: true,
-          primaryKey: true,
-        },
-        name: { type: Sequelize.STRING, field: "name", primaryKey: true },
-        scale: {
-          type: Sequelize.ENUM("SMALL", "MID", "LARGE"),
-          field: "scale",
-          primaryKey: true,
-        },
-        createdAt: {
-          type: Sequelize.DATE,
-          field: "createdAt",
-          allowNull: true,
-        },
-      },
-      { transaction },
-    ],
-  },
   {
     fn: "createTable",
     params: [
@@ -288,6 +223,7 @@ const migrationCommands = (transaction) => [
           autoIncrement: true,
           primaryKey: true,
         },
+        title: { type: Sequelize.STRING, field: "title", allowNull: false },
         description: {
           type: Sequelize.STRING,
           field: "description",
@@ -341,47 +277,6 @@ const migrationCommands = (transaction) => [
   {
     fn: "createTable",
     params: [
-      "insuranceOrders",
-      {
-        id: {
-          type: Sequelize.INTEGER,
-          field: "id",
-          autoIncrement: true,
-          primaryKey: true,
-        },
-        status: {
-          type: Sequelize.ENUM("completed", "ongoing", "failed"),
-          field: "status",
-          allowNull: false,
-        },
-        createdAt: {
-          type: Sequelize.DATE,
-          field: "createdAt",
-          allowNull: true,
-        },
-        insurancePlanId: {
-          type: Sequelize.INTEGER,
-          field: "insurancePlanId",
-          onUpdate: "CASCADE",
-          onDelete: "SET NULL",
-          references: { model: "insurancePlans", key: "id" },
-          allowNull: true,
-        },
-        leaseOrderId: {
-          type: Sequelize.INTEGER,
-          field: "leaseOrderId",
-          onUpdate: "CASCADE",
-          onDelete: "SET NULL",
-          references: { model: "leaseOrders", key: "id" },
-          allowNull: true,
-        },
-      },
-      { transaction },
-    ],
-  },
-  {
-    fn: "createTable",
-    params: [
       "payments",
       {
         id: {
@@ -420,31 +315,6 @@ const migrationCommands = (transaction) => [
       { transaction },
     ],
   },
-  {
-    fn: "createTable",
-    params: [
-      "mapper",
-      {
-        insurancePlanId: {
-          type: Sequelize.INTEGER,
-          field: "insurancePlanId",
-          onUpdate: "CASCADE",
-          onDelete: "CASCADE",
-          references: { model: "insurancePlans", key: "id" },
-          primaryKey: true,
-        },
-        insuranceVendorId: {
-          type: Sequelize.INTEGER,
-          field: "insuranceVendorId",
-          onUpdate: "CASCADE",
-          onDelete: "CASCADE",
-          references: { model: "insuranceVendors", key: "id" },
-          primaryKey: true,
-        },
-      },
-      { transaction },
-    ],
-  },
 ];
 
 const rollbackCommands = (transaction) => [
@@ -455,18 +325,6 @@ const rollbackCommands = (transaction) => [
   {
     fn: "dropTable",
     params: ["incidents", { transaction }],
-  },
-  {
-    fn: "dropTable",
-    params: ["insuranceOrders", { transaction }],
-  },
-  {
-    fn: "dropTable",
-    params: ["insurancePlans", { transaction }],
-  },
-  {
-    fn: "dropTable",
-    params: ["insuranceVendors", { transaction }],
   },
   {
     fn: "dropTable",
@@ -487,10 +345,6 @@ const rollbackCommands = (transaction) => [
   {
     fn: "dropTable",
     params: ["users", { transaction }],
-  },
-  {
-    fn: "dropTable",
-    params: ["mapper", { transaction }],
   },
 ];
 

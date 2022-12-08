@@ -18,7 +18,6 @@ module.exports = (sequelize, Sequelize) => {
     leaseOrderSchema.associate =  (models) => {
         leaseOrderSchema.hasOne(models.payment);
         leaseOrderSchema.hasMany(models.incidents);
-        leaseOrderSchema.hasOne(models.insuranceOrder);
         leaseOrderSchema.belongsTo(models.inventory);
     };
     return leaseOrderSchema;

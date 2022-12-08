@@ -20,6 +20,8 @@ router.route('/getAll')
 router.route('/showAllOrders')
     .get(userController.showAllOrders);
 
+router.route('/testSP')
+    .post(userController.create);
 server.use('/', router);
 
 module.exports = server;

@@ -69,7 +69,7 @@
     <% }%>
 
         <div class="col-md-8 col-sm-8 col-xs-12">
-            <h1 class="pubs"><strong>Your Orders:-</strong></h1>
+            <h1 class="pubs"><strong>All Incidents:-</strong></h1>
             <br><br>
             <% if(noMatch !== null) { %>
                 <h3><%= noMatch %></h3>
@@ -77,24 +77,33 @@
             <% cars.forEach(car => { %>
             <div class="event">
                 <div class="row ht40">
-                    <div class="col-md-4 col-sm-12 col-xs-12 ht40" style="height: 440px;"><img class=newimg src="../assets/images/1.jpg"></div>
-                    <div class="col-md-8 col-sm-12 col-xs-12 ht40 pubdet" style="height: 440px;">
-                        <h3 class="pubnm"><%=car.name%></h3>
-                        <p class="lct"><strong><strong>Car Type : </strong><%=car.type%></strong></p>
-                        <p class="st"><span class="cst"><strong>Rental Rate:</strong> </span> <strong><%=car.rentalRate%> </strong><span class="cst">$</span>
-                        <p class="st"><span class="cst"><strong>Fuel Type:</strong> </span> <strong><%=car.fuelType%> </strong><span class="cst"></span>
-                        <p class="st"><span class="cst"><strong>Make:</strong> </span> <strong><%=car.make%> </strong><span class="cst"></span>
-                        <p class="st"><span class="cst"><strong>Order Status:</strong> </span> <strong><%=car.orderStatus%> </strong><span class="cst"></span>
-                        <p class="st"><span class="cst"><strong>Payment Status:</strong> </span> <strong><%=car.paymentStatus%> </strong><span class="cst"></span>
-                        <p class="st"><span class="cst"><strong>Order Date:</strong> </span> <strong><%=car.orderDate%> </strong><span class="cst"></span>
-                        <form action="/incident/createIncident" method="POST">
+<!--                    <div class="col-md-4 col-sm-12 col-xs-12 ht40" style="height: 440px;"><img class=newimg src="../assets/images/1.jpg"></div>-->
+                    <div class="col-md-8 col-sm-12 col-xs-12 ht40 pubdet" style="height: 420px;">
+                        <h3 class="pubnm"><%=car.title%></h3>
+<!--                        <p class="lct"><strong><strong>Car Type : </strong><%=car.type%></strong></p>-->
+                        <p class="st"><span class="cst"><strong>Description: </strong> </span> <strong><%=car.description%> </strong><span class="cst"></span>
+                        <p class="st"><span class="cst"><strong>State:</strong> </span> <strong><%=car.state%> </strong><span class="cst"></span>
+                        <p class="st"><span class="cst"><strong>Severity:</strong> </span> <strong><%=car.severity%> </strong><span class="cst"></span>
+                        <p class="st"><span class="cst"><strong>Resolution</strong> </span> <strong><%=car.resolution%> </strong><span class="cst"></span>
+                        <p class="st"><span class="cst"><strong>Created on:</strong> </span> <strong><%=car.createdAt%> </strong><span class="cst"></span>
+<!--                        <form action="/incident/createIncident" method="POST">-->
+<!--                            <input type="hidden" name="leaseOrderId" id="dtp_input1" value=<%=car.leaseOrderId%> /><br/>-->
+<!--                            <button type="submit" class="btn btn-primary">Create an Incident</button>-->
+<!--                        </form>-->
+
+                        <% if(car.state !== "RESOLVED"){%>
+                        <form action="/incident/resolveIncident" method="POST">
                             <input type="hidden" name="leaseOrderId" id="dtp_input1" value=<%=car.leaseOrderId%> /><br/>
-                            <button type="submit" class="btn btn-primary">Create an Incident</button>
+                            <input type="hidden" name="incidentId" id="dtp_input1" value=<%=car.id%> /><br/>
+
+                            <div class="form-group">
+                                <label for="name">Resolution</label>
+                                <input type="text" class="form-control" name="resolution" id="resolution" aria-describedby="name" placeholder="Enter Resolution of the incident">
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Resolve Incident</button>
                         </form>
-                        <form action="/incident/allIncidents" method="POST">
-                            <input type="hidden" name="leaseOrderId" id="dtp_input1" value=<%=car.leaseOrderId%> /><br/>
-                            <button type="submit" class="btn btn-primary">See All Incidents</button>
-                        </form>
+                        <%}%>
                     </div>
                 </div>
             </div>

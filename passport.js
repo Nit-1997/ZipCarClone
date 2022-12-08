@@ -1,4 +1,5 @@
-module.exports =  (passport, user) =>{
+const bCrypt = require("bcrypt-nodejs");
+module.exports = (passport, user) => {
     let User = user;
     let LocalStrategy = require('passport-local').Strategy;
     let bCrypt = require('bcrypt-nodejs');
@@ -26,48 +27,51 @@ module.exports =  (passport, user) =>{
             passwordField: 'password',
             passReqToCallback: true
         },
-        function (req, email, password, done) {
-            console.log("here");
+        async (req, email, password, done) => {
             //hashing the password
-            let generateHash = function (password) {
+            let generateHash = async (password) => {
                 return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
             };
 
             // select * from users where email = abc@gmail.com limit 1
             // CALL findUser(email)
-            User.findOne({
+
+
+            let foundUser = await User.findOne({
                 where: {
                     email: email
                 }
-            }).then(function (user) {
-                if (user) {
-                    res.flash("error", 'That email is already taken');
-                    return done(null, false);
-                } else {
-                    let userPassword = generateHash(password);
-                    let data =
-                        {
-                            email: email,
-                            type: req.body.type,
-                            password: userPassword,
-                            name: req.body.name,
-                            contact: req.body.contact,
-                            createdAt: new Date()
-                        };
-
-                    // CALL createUser(email , type ...)
-
-                    User.create(data).then( (newUser, created)=>{
-                        if (!newUser) {
-                            return done(null, false);
-                        }
-                        if (newUser) {
-                            req.flash("success", "Welcome to ZipCar " + newUser.name);
-                            return done(null, newUser);
-                        }
-                    });
-                }
             });
+
+            let msg;
+
+            if (foundUser) {
+                msg = 'That email is already taken';
+                return done(null, false, {message: msg});
+            } else {
+                let userPassword = await generateHash(password);
+                let data =
+                    {
+                        email: email,
+                        type: req.body.type,
+                        password: userPassword,
+                        name: req.body.name,
+                        contact: req.body.contact,
+                        createdAt: new Date()
+                    };
+
+                console.log(userPassword);
+                // CALL createUser(email , type ...)
+
+                let newlyCreatedUser = await User.create(data);
+                if (!newlyCreatedUser) {
+                    msg = "User creation failure";
+                    return done(null, false, {message: msg});
+                } else {
+                    msg = "Welcome to ZipCar " + newlyCreatedUser.name;
+                    return done(null, newlyCreatedUser, {message: msg});
+                }
+            }
 
         }
     ));
@@ -80,30 +84,34 @@ module.exports =  (passport, user) =>{
             passwordField: 'password',
             passReqToCallback: true
         },
-        function (req, email, password, done) {
-            let User = user;
-            let isValidPassword = function (userpass, password) {
-                return bCrypt.compareSync(password, userpass);
+        async (req, email, password, done) => {
+            try {
+                let User = user;
+                let isValidPassword = async (userpass, password) => {
+                    return bCrypt.compareSync(password, userpass);
+                }
+                let foundUser = await User.findOne({
+                    where: {
+                        email: email
+                    }
+                });
+                let msg;
+                if (!foundUser) {
+                    msg = 'Email does not exist';
+                    return done(null, false, {message: msg});
+                }
+                if (!isValidPassword(foundUser.password, password)) {
+                    msg = 'Incorrect password.';
+                    return done(null, false, {message: msg});
+                }
+                let userinfo = foundUser.get();
+                msg = "Welcome to ZipCar " + userinfo.name;
+                return done(null, userinfo , {message : msg});
+            } catch (error) {
+                console.log("Error:", error);
+                msg = error;
+                return done(null, false, {message: msg});
             }
-            User.findOne({
-                where: {
-                    email: email
-                }
-            }).then(function (user) {
-                if (!user) {
-                    res.flash("error", 'Email does not exist');
-                    return done(null, false);
-                }
-                if (!isValidPassword(user.password, password)) {
-                    res.flash("error", 'Incorrect password.');
-                    return done(null, false);
-                }
-                let userinfo = user.get();
-                return done(null, userinfo);
-            }).catch(function (err) {
-                console.log("Error:", err);
-                return done(null, false);
-            });
         }
     ));
 
