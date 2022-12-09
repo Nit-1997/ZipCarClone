@@ -9,6 +9,7 @@ const sequelize = models.sequelize;
 module.exports = {
 
     bulkInsert: async function (req, res) {
+
         try {
             let pickupStationData = [
                 {

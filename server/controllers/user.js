@@ -58,18 +58,26 @@ module.exports = {
 
     showAllOrders: async (req, res) => {
         try {
-            if (!req.user) {
-                await res.sendStatus(401);
+            if(!req.user){
+                req.flash("error","You need to be Logged In");
+                res.redirect('/user/login');
                 return;
             }
-            let orders = await sequelize.query("select leaseOrders.id as leaseOrderId, cars.name, cars.make, cars.fuelType , cars.rentalRate ,\n" +
-                "cars.type, payments.state as paymentStatus , leaseOrders.status as orderStatus  , leaseOrders.createdAt as orderDate\n" +
-                "from leaseOrders \n" +
-                "join payments on leaseOrders.id = payments.leaseOrderId \n" +
-                "join inventories on leaseOrders.inventoryId = inventories.id\n" +
-                "join cars on cars.id = inventories.id\n" +
-                "where leaseOrders.userId = " + req.user.id + ";", {type: sequelize.QueryTypes.SELECT});
-            console.log(orders);
+            // let orders = await sequelize.query("select leaseOrders.id as leaseOrderId, cars.name, cars.make, cars.fuelType , cars.rentalRate ,\n" +
+            //     "cars.type, payments.state as paymentStatus , leaseOrders.status as orderStatus  , leaseOrders.createdAt as orderDate\n" +
+            //     "from leaseOrders \n" +
+            //     "join payments on leaseOrders.id = payments.leaseOrderId \n" +
+            //     "join inventories on leaseOrders.inventoryId = inventories.id\n" +
+            //     "join cars on cars.id = inventories.id\n" +
+            //     "where leaseOrders.userId = " + req.user.id + ";", {type: sequelize.QueryTypes.SELECT});
+
+            let orders = await sequelize.query('CALL showAllOrders (:userId)',
+                {
+                    replacements:
+                        {
+                            userId: req.user.id
+                        }
+                });
             let noMatch = "No Orders Found"
             if (orders.length > 0) {
                 noMatch = null;

@@ -11,24 +11,37 @@ module.exports = {
     create: async function (req, res) {
         try {
             // write code to create a user here.
+            if(!req.user){
+                req.flash("error","You need to be Logged In");
+                res.redirect('/user/login');
+                return;
+            }
 
-            console.log(req.body);
+            // let data = {
+            //     title: req.body.title,
+            //     description: req.body.description,
+            //     severity: req.body.severity,
+            //     leaseOrderId: req.body.leaseOrderId,
+            //     state: "RAISED",
+            //     createdAt: Date.now(),
+            //     userId: req.user.id,
+            //     resolution: ""
+            // };
 
-            let data = {
-                title: req.body.title,
-                description: req.body.description,
-                severity: req.body.severity,
-                leaseOrderId: req.body.leaseOrderId,
-                state: "RAISED",
-                createdAt: Date.now(),
-                userId: req.user.id,
-                resolution: ""
-            };
-
-            let newlyCreatedIncident = await incident.create(data);
-
-            console.log(newlyCreatedIncident);
-            res.redirect('/');
+            let newlyCreated = await sequelize.query('CALL createIncident (:title, :description , :severity , :leaseOrderId , :userId)',
+                {
+                    replacements:
+                        {
+                            title: req.body.title,
+                            description: req.body.description,
+                            severity: req.body.severity,
+                            leaseOrderId: req.body.leaseOrderId,
+                            userId: req.user.id
+                        }
+                });
+            newlyCreated  = newlyCreated[0];
+            req.flash("success","Created incident successfully");
+            res.redirect('/user/showAllOrders');
 
         } catch (error) {
             console.log(error);
@@ -38,12 +51,25 @@ module.exports = {
     getAll: async function (req, res) {
         try {
             // write code to create a user here.
-            let cars = await sequelize.query("select * from incidents  where userId = " + req.user.id + " and leaseOrderId = "+req.body.leaseOrderId+";", {type: sequelize.QueryTypes.SELECT});
-            let noMatch = "No cars Found";
+            if(!req.user){
+                req.flash("error","You need to be Logged In");
+                res.redirect('/user/login');
+                return;
+            }
+            //let cars = await sequelize.query("select * from incidents  where userId = " + req.user.id + " and leaseOrderId = "+req.body.leaseOrderId+";", {type: sequelize.QueryTypes.SELECT});
+            let cars = await sequelize.query('CALL getAllIncidents (:userId, :leaseId)',
+                {
+                    replacements:
+                        {
+                            userId:  req.user.id,
+                            leaseId: req.body.leaseOrderId
+                        }
+                });
+
+            let noMatch = "No Incidents Found";
             if(cars.length > 0){
                 noMatch = null;
             }
-            console.log(cars)
             res.render('allIncidents',{cars: cars ,noMatch:noMatch});
 
         } catch (error) {
@@ -52,11 +78,11 @@ module.exports = {
     },
     showIncidentPage: async (req, res) => {
         try {
-            if (!req.user) {
-                await res.sendStatus(401);
+            if(!req.user){
+                req.flash("error","You need to be Logged In");
+                res.redirect('/user/login');
                 return;
             }
-            console.log(req.body)
             res.render('createIncident', {leaseOrderId: req.body.leaseOrderId});
         } catch (error) {
             console.log(error);
@@ -64,20 +90,25 @@ module.exports = {
     },
     resolveIncident: async (req, res) => {
         try {
-            if (!req.user) {
-                await res.sendStatus(401);
+            if(!req.user){
+                req.flash("error","You need to be Logged In");
+                res.redirect('/user/login');
                 return;
             }
-            console.log("**********************************")
-            console.log(req.body);
+            // let data = {
+            //     resolution : req.body.resolution,
+            //     state : "RESOLVED",
+            // }
 
-            let data = {
-                resolution : req.body.resolution,
-                state : "RESOLVED",
-            }
-
-            let updatedIncident  = await incident.update( data, {where : {id : req.body.incidentId}});
-            console.log(updatedIncident);
+            let updatedIncident = await sequelize.query('CALL resolveIncident (:resolution, :id)',
+                {
+                    replacements:
+                        {
+                            resolution:  req.body.resolution,
+                            id: req.body.incidentId,
+                        }
+                });
+            //let updatedIncident  = await incident.update( data, {where : {id : req.body.incidentId}});
             res.redirect('/user/showAllOrders');
         } catch (error) {
             console.log(error);

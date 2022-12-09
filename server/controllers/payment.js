@@ -12,40 +12,52 @@ module.exports = {
     makePayment: async function (req, res) {
         try {
 
-            if(!req.user){
-                await res.sendStatus(401);
+            if (!req.user) {
+                req.flash("error", "You need to be Logged In");
+                res.redirect('/user/login');
                 return;
             }
             // make a procedure registerOrder()
             //get the data required to
             // create a payment
             // create a lease order
-            let car = await sequelize.query("select cars.id , type , name , make, fuelType, rentalRate , userId , inventories.id as inventoryId, inventories.zipcode ,pickupStationId , address  from cars join inventories on cars.id = inventories.carId join pickupStations on pickupStations.id = inventories.pickupStationId where status = \"AVAILABLE\" and cars.id ="+req.body.carId+";", {type: sequelize.QueryTypes.SELECT});
-            car = car[0];
-            console.log(car);
-            let leaseOrderData = {
-              status : "completed",
-              createdAt : req.body.dated,
-              userId : req.user.id,
-              inventoryId : car.inventoryId
-            }
+            // let car = await sequelize.query("select cars.id , type , name , make, fuelType, rentalRate , userId , inventories.id as inventoryId, inventories.zipcode ,pickupStationId , address  from cars join inventories on cars.id = inventories.carId join pickupStations on pickupStations.id = inventories.pickupStationId where status = \"AVAILABLE\" and cars.id ="+req.body.carId+";", {type: sequelize.QueryTypes.SELECT});
+            // car = car[0];
+            // console.log(car);
+            // let leaseOrderData = {
+            //   status : "completed",
+            //   createdAt : req.body.dated,
+            //   userId : req.user.id,
+            //   inventoryId : car.inventoryId
+            // }
+            //
+            // let newlyCreatedLeaseOrder = await leaseOrder.create(leaseOrderData);
+            //
+            // let paymentData = {
+            //     state : "SUCCESS",
+            //     createdAt: Date.now(),
+            //     leaseOrderId : newlyCreatedLeaseOrder.dataValues.id,
+            //     userId: req.user.id
+            // }
+            //
+            // let newlyCreatedPayment = await payment.create(paymentData);
+            //
+            // let updatedInventoryData = {
+            //     status : "BOOKED"
+            // }
+            // let updatedInventory  = await inventory.update( updatedInventoryData, {where : {id : car.inventoryId}});
 
-            let newlyCreatedLeaseOrder = await leaseOrder.create(leaseOrderData);
+            let createdTransaction = await sequelize.query('CALL createOrder (:date, :carId , :userId)',
+                {
+                    replacements:
+                        {
+                            date: req.body.dated,
+                            carId: req.body.carId,
+                            userId: req.user.id
 
-            let paymentData = {
-                state : "SUCCESS",
-                createdAt: Date.now(),
-                leaseOrderId : newlyCreatedLeaseOrder.dataValues.id,
-                userId: req.user.id
-            }
-
-            let newlyCreatedPayment = await payment.create(paymentData);
-
-            let updatedInventoryData = {
-                status : "BOOKED"
-            }
-            let updatedInventory  = await inventory.update( updatedInventoryData, {where : {id : car.inventoryId}});
-            req.flash("success",req.user.name+", your Booking has been Successfully added:)");
+                        }
+                });
+            req.flash("success", req.user.name + ", your Booking has been Successfully added:)");
             res.redirect('/user/showAllOrders');
         } catch (error) {
             console.log(error);
