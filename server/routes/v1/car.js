@@ -11,9 +11,6 @@ const carController = controllers.car;
 router.route('/cars')
     .get(carController.showCars);
 
-router.route('/getAllCars')
-    .get(carController.getAllCars);
-
 router.route('/createCar')
     .post(carController.createCar);
 

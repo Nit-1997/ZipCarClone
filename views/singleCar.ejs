@@ -179,7 +179,9 @@
                             <input type="hidden" name="carId" id="dtp_input1" value=<%=car.id%> /><br/>
                         </div>
                     </div>
+                    <% if(currentUser&& ((car.userId) !== (currentUser.id))){ %>
                     <button type="submit" class="btn btn-primary">Make the Purchase</button>
+                    <% } %>
                 </form>
                 <% if(currentUser&& ((car.userId) === (currentUser.id))){ %>
                 <a href ="/car/edit?carId=<%=car.id%>" class="btn btn-warning btn-xs">Edit this Car</a>

@@ -18,8 +18,6 @@ END //
 
 DELIMITER ;
 
-call findCarById(1);
-
 
 -- createCar
 DROP PROCEDURE IF EXISTS createCar;
@@ -296,5 +294,23 @@ BEGIN
 END//
 DELIMITER ;
 
+
+-- Procedure to insert a pickup station
+DROP PROCEDURE IF EXISTS createPickupStation;
+DELIMITER //
+
+CREATE PROCEDURE createPickupStation(zipcode INT, address NVARCHAR(100))
+BEGIN
+        INSERT INTO pickupStations(zipcode, address, createdAt)
+        VALUES(zipcode, address, CURDATE());
+END //
+
+DELIMITER ;
+
+-- bulk insert serviceable pickup stations
+CALL createPickupStation(201005,'Boylston St');
+CALL createPickupStation(201006,'Beacon St');
+CALL createPickupStation(201007,'Church St');
+CALL createPickupStation(201008,'Boston Commons');
 
 

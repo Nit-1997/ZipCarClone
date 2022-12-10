@@ -32,11 +32,6 @@ module.exports = (passport, user) => {
             passReqToCallback: true
         },
         async (req, email, password, done) => {
-            //hashing the password
-            // let generateHash = async (password) => {
-            //     return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
-            // };
-
             try {
                 let newlyCreated = await sequelize.query('CALL signup (:email, :type , :pwd , :name , :contact)',
                     {
@@ -67,47 +62,6 @@ module.exports = (passport, user) => {
                     return done(null, false, {message: error});
                 }
             }
-
-            // select * from users where email = abc@gmail.com limit 1
-            // CALL findUser(email)
-
-
-            // let foundUser = await User.findOne({
-            //     where: {
-            //         email: email
-            //     }
-            // });
-            //
-            // let msg;
-            //
-            // if (foundUser) {
-            //     msg = 'That email is already taken';
-            //     return done(null, false, {message: msg});
-            // } else {
-            //     let userPassword = await generateHash(password);
-            //     let data =
-            //         {
-            //             email: email,
-            //             type: req.body.type,
-            //             password: userPassword,
-            //             name: req.body.name,
-            //             contact: req.body.contact,
-            //             createdAt: new Date()
-            //         };
-            //
-            //     console.log(userPassword);
-            //     // CALL createUser(email , type ...)
-            //
-            //     let newlyCreatedUser = await User.create(data);
-            //     if (!newlyCreatedUser) {
-            //         msg = "User creation failure";
-            //         return done(null, false, {message: msg});
-            //     } else {
-            //         msg = "Welcome to ZipCar " + newlyCreatedUser.name;
-            //         return done(null, newlyCreatedUser, {message: msg});
-            //     }
-            // }
-
         }
     ));
 
@@ -122,12 +76,6 @@ module.exports = (passport, user) => {
         async (req, email, password, done) => {
             try {
                 let User = user;
-                // let isValidPassword = async (userpass, password) => {
-                //     return  bCrypt.compareSync(password, userpass);
-                // }
-                // let generateHash = async (password) => {
-                //     return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
-                // };
                 let foundUser = await sequelize.query('CALL login (:email, :pwd)',
                     {
                         replacements:
@@ -137,26 +85,6 @@ module.exports = (passport, user) => {
                             }
                     });
                 foundUser = foundUser[0];
-
-
-                // console.log(foundUser);
-
-
-                // let foundUser = await User.findOne({
-                //     where: {
-                //         email: email
-                //     }
-                // });
-                // let msg;
-                // if (!foundUser) {
-                //     msg = 'Email does not exist';
-                //     return done(null, false, {message: msg});
-                // }
-                // if (await !isValidPassword(foundUser.password, password)) {
-                //     msg = 'Incorrect password.';
-                //     return done(null, false, {message: msg});
-                // }
-                // let userinfo = foundUser.get();
                 let msg = "Welcome to ZipCar " + foundUser.name;
                 return done(null, foundUser , {message : msg});
             } catch (error) {

@@ -6,40 +6,6 @@ const user = models.user;
 const sequelize = models.sequelize;
 
 module.exports = {
-    create: async function (req, res) {
-        try {
-            // write code to create a user here.
-            let users = await sequelize.query('CALL login (:email, :pwd)',
-                {
-                    replacements:
-                        {
-                            email: "ntnbhat@gmail.com",
-                            pwd: '$2a$08$78fjxFr6G2Xn6n6.UsXJmOXQsqFw6thgrFs.033KXvVutlggKzpKy'
-                        }
-                });
-
-
-
-            console.log(users[0]);
-
-            res.json(users[0]);
-
-        } catch (error) {
-            console.log(error);
-        }
-    },
-
-    getAll: async function (req, res) {
-        try {
-            // write code to create a user here.
-            let users = await sequelize.query("select * from users", {type: sequelize.QueryTypes.SELECT});
-            res.send(users);
-
-        } catch (error) {
-            console.log(error);
-        }
-    },
-
     login: async function (req, res) {
         try {
             res.render('login');
@@ -63,13 +29,6 @@ module.exports = {
                 res.redirect('/user/login');
                 return;
             }
-            // let orders = await sequelize.query("select leaseOrders.id as leaseOrderId, cars.name, cars.make, cars.fuelType , cars.rentalRate ,\n" +
-            //     "cars.type, payments.state as paymentStatus , leaseOrders.status as orderStatus  , leaseOrders.createdAt as orderDate\n" +
-            //     "from leaseOrders \n" +
-            //     "join payments on leaseOrders.id = payments.leaseOrderId \n" +
-            //     "join inventories on leaseOrders.inventoryId = inventories.id\n" +
-            //     "join cars on cars.id = inventories.id\n" +
-            //     "where leaseOrders.userId = " + req.user.id + ";", {type: sequelize.QueryTypes.SELECT});
 
             let orders = await sequelize.query('CALL showAllOrders (:userId)',
                 {
@@ -84,7 +43,13 @@ module.exports = {
             }
             res.render('allOrders', {cars: orders, noMatch: noMatch});
         } catch (error) {
-            console.log(error);
+            if (error.original) {
+                let msg = error.original.sqlMessage;
+                req.flash("error" , msg);
+            } else {
+                console.log(error);
+                req.flash("error" , "Unexpected server failure")
+            }
         }
     }
 

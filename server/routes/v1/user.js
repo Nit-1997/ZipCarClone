@@ -14,14 +14,9 @@ router.route('/signup')
 router.route('/login')
     .get(userController.login);
 
-router.route('/getAll')
-    .get(userController.getAll);
-
 router.route('/showAllOrders')
     .get(userController.showAllOrders);
 
-router.route('/testSP')
-    .post(userController.create);
 server.use('/', router);
 
 module.exports = server;

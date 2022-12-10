@@ -24,11 +24,8 @@ app.use(bodyParser.json({ limit: "50mb" }));
 app.use(flash());
 
 
-
-
 // set up app views handling
 app.set('view engine', 'ejs');
-
 
 app.use(session({
     secret: 'keyboard cat',
@@ -51,9 +48,7 @@ app.use('/',routes);
 
 // load up app routes
 app.get(['/', '/home', '/landing'], (req, res) =>{
-    let orders = "nitin"
-    res.render('home',{orders:orders});
-    //res.json("landing page");
+    res.render('home');
 });
 
 
@@ -61,14 +56,14 @@ app.post('/register',passport.authenticate('local-signup', {
     successRedirect: '/landing',
     failureRedirect: '/user/signup',
     failureFlash: true,
-    successFlash: 'Welcome to Zipcar'
+    successFlash: true
 }));
 
 app.post('/signin', passport.authenticate('local-signin', {
     successRedirect: '/landing',
     failureRedirect: '/user/login',
     failureFlash: true,
-    successFlash: 'Welcome to Zipcar'
+    successFlash: true
 }),(req,res)=>{
 });
 
@@ -82,10 +77,7 @@ app.get("/logout",(req,res) => {
     });
 });
 
-
-
-
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0',() => {
     console.log("zipcar clone server has started on http://localhost:"+PORT);
 });
 

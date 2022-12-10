@@ -71,16 +71,16 @@
                 <form action="/car/createCar" method="POST">
                     <div class="form-group">
                         <label for="name">Car name</label>
-                        <input type="text" class="form-control" name="name" id="name" aria-describedby="name" placeholder="Enter Car's model name">
+                        <input type="text" class="form-control" name="name" id="name" aria-describedby="name" placeholder="Enter Car's model name" required>
                     </div>
                     <div class="form-group">
                         <label for="about">Make Year of the car</label>
-                        <input type="Number" class="form-control" id="make" aria-describedby="about" name="make" placeholder="Make year of the Car">
+                        <input type="Number" class="form-control" id="make" aria-describedby="about" name="make" placeholder="Make year of the Car" required>
                     </div>
 
                     <div class="form-group">
                         <label for="address">Rental Price in $/hr</label>
-                        <input type="Number" step="0.01" class="form-control" id="rentalRate" aria-describedby="address" name="rentalRate" placeholder="Enter the rental price for the car">
+                        <input type="Number" step="0.01" class="form-control" id="rentalRate" aria-describedby="address" name="rentalRate" placeholder="Enter the rental price for the car" required>
                     </div>
 
                     <div class="form-group">
@@ -113,8 +113,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="zipcode">Zipcode</label>
-                        <input type="Number"  class="form-control" id="rentalRate" aria-describedby="address" name="zipcode" placeholder="Enter the zipcode where you want to rent out the car">
+                        <label for="zipcode">Zipcode : supported in [201005 , 201006 , 201007 , 201008 , 201009]</label>
+                        <input type="Number"  class="form-control" id="rentalRate" aria-describedby="address" name="zipcode" placeholder="Enter the zipcode where you want to rent out the car" required>
                     </div>
 
 

@@ -10,24 +10,11 @@ const sequelize = models.sequelize;
 module.exports = {
     create: async function (req, res) {
         try {
-            // write code to create a user here.
             if(!req.user){
                 req.flash("error","You need to be Logged In");
                 res.redirect('/user/login');
                 return;
             }
-
-            // let data = {
-            //     title: req.body.title,
-            //     description: req.body.description,
-            //     severity: req.body.severity,
-            //     leaseOrderId: req.body.leaseOrderId,
-            //     state: "RAISED",
-            //     createdAt: Date.now(),
-            //     userId: req.user.id,
-            //     resolution: ""
-            // };
-
             let newlyCreated = await sequelize.query('CALL createIncident (:title, :description , :severity , :leaseOrderId , :userId)',
                 {
                     replacements:
@@ -44,19 +31,23 @@ module.exports = {
             res.redirect('/user/showAllOrders');
 
         } catch (error) {
-            console.log(error);
+            if (error.original) {
+                let msg = error.original.sqlMessage;
+                req.flash("error" , msg);
+            } else {
+                console.log(error);
+                req.flash("error" , "Unexpected server failure")
+            }
         }
     },
 
     getAll: async function (req, res) {
         try {
-            // write code to create a user here.
             if(!req.user){
                 req.flash("error","You need to be Logged In");
                 res.redirect('/user/login');
                 return;
             }
-            //let cars = await sequelize.query("select * from incidents  where userId = " + req.user.id + " and leaseOrderId = "+req.body.leaseOrderId+";", {type: sequelize.QueryTypes.SELECT});
             let cars = await sequelize.query('CALL getAllIncidents (:userId, :leaseId)',
                 {
                     replacements:
@@ -73,7 +64,13 @@ module.exports = {
             res.render('allIncidents',{cars: cars ,noMatch:noMatch});
 
         } catch (error) {
-            console.log(error);
+            if (error.original) {
+                let msg = error.original.sqlMessage;
+                req.flash("error" , msg);
+            } else {
+                console.log(error);
+                req.flash("error" , "Unexpected server failure")
+            }
         }
     },
     showIncidentPage: async (req, res) => {
@@ -95,11 +92,6 @@ module.exports = {
                 res.redirect('/user/login');
                 return;
             }
-            // let data = {
-            //     resolution : req.body.resolution,
-            //     state : "RESOLVED",
-            // }
-
             let updatedIncident = await sequelize.query('CALL resolveIncident (:resolution, :id)',
                 {
                     replacements:
@@ -108,10 +100,15 @@ module.exports = {
                             id: req.body.incidentId,
                         }
                 });
-            //let updatedIncident  = await incident.update( data, {where : {id : req.body.incidentId}});
             res.redirect('/user/showAllOrders');
         } catch (error) {
-            console.log(error);
+            if (error.original) {
+                let msg = error.original.sqlMessage;
+                req.flash("error" , msg);
+            } else {
+                console.log(error);
+                req.flash("error" , "Unexpected server failure")
+            }
         }
     }
 
