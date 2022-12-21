@@ -25,3 +25,6 @@ Project uses :
 
 # Database Schema 
 ![](erd.png)
+
+# Project Demo
+https://drive.google.com/file/d/1FefQ9JD4Q2uqjnYLlSgiCQ9Uki5QY2b7/view
